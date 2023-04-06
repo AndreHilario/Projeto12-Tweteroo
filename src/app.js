@@ -13,6 +13,10 @@ app.post("/sign-up", (req, res) => {
     const { username, avatar } = req.body;
     const newUser = { username, avatar };
 
+    if(!username || !avatar) {
+        return res.status(400).send("Todos os campos são obrigatórios!");
+    }
+
     newUsersServer.push(newUser);
     res.status(201).send("OK");
 })
@@ -21,6 +25,10 @@ app.post("/tweets", (req, res) => {
 
     const { username, tweet } = req.body;
 
+    if(!username || !tweet) {
+        return res.status(400).send("Todos os campos são obrigatórios!");
+    }
+
     const user = newUsersServer.find((u) => u.username === username);
 
     if (!user) {
@@ -28,7 +36,7 @@ app.post("/tweets", (req, res) => {
       return;
     }
   
-    const newTweet = { username, tweet, avatar: user.avatar };
+    const newTweet = { username, avatar: user.avatar, tweet };
     newTweetsServer.push(newTweet);
     res.status(201).send("OK");
 
