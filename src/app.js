@@ -36,7 +36,18 @@ app.post("/tweets", (req, res) => {
 
 app.get("/tweets", (req, res) => {
 
-    res.send(newTweetsServer);
+    if(newTweetsServer.length <= 10) {
+        res.send(newTweetsServer);
+    } else {
+        const begin = newTweetsServer.length - 10;
+        let newArrayTweetsServer = [];
+        for(let i = begin; i < newTweetsServer.length; i++){
+            newArrayTweetsServer.push(newTweetsServer[i]);
+            console.log(newArrayTweetsServer)
+        }
+
+        res.send(newArrayTweetsServer);
+    }
 
 })
 
