@@ -21,12 +21,14 @@ app.post("/tweets", (req, res) => {
 
     const { username, tweet } = req.body;
 
-    if(!username) {
-        res.status(401).send("UNAUTHORIZED");
+    const user = newUsersServer.find((u) => u.username === username);
+
+    if (!user) {
+      res.status(401).send("UNAUTHORIZED");
+      return;
     }
-
-    const newTweet = { username, tweet };
-
+  
+    const newTweet = { username, tweet, avatar: user.avatar };
     newTweetsServer.push(newTweet);
     res.status(201).send("OK");
 
@@ -34,7 +36,9 @@ app.post("/tweets", (req, res) => {
 
 app.get("/tweets", (req, res) => {
 
+    res.send(newTweetsServer);
+
 })
 
 const PORT = 5000;
-app.listen(PORT, () => console.log(`Tweets funcionando na porta ${PORT}`));
+app.listen(PORT, () => console.log(`Tweeteroo funcionando na porta ${PORT}`));
