@@ -13,7 +13,7 @@ app.post("/sign-up", (req, res) => {
     const { username, avatar } = req.body;
     const newUser = { username, avatar };
 
-    if(!username || !avatar) {
+    if (!username || !avatar) {
         return res.status(400).send("Todos os campos são obrigatórios!");
     }
 
@@ -25,17 +25,17 @@ app.post("/tweets", (req, res) => {
 
     const { username, tweet } = req.body;
 
-    if(!username || !tweet) {
+    if (!username || !tweet) {
         return res.status(400).send("Todos os campos são obrigatórios!");
     }
 
     const user = newUsersServer.find((u) => u.username === username);
 
     if (!user) {
-      res.status(401).send("UNAUTHORIZED");
-      return;
+        res.status(401).send("UNAUTHORIZED");
+        return;
     }
-  
+
     const newTweet = { username, avatar: user.avatar, tweet };
     newTweetsServer.push(newTweet);
     res.status(201).send("OK");
@@ -44,19 +44,29 @@ app.post("/tweets", (req, res) => {
 
 app.get("/tweets", (req, res) => {
 
-    if(newTweetsServer.length <= 10) {
+    if (newTweetsServer.length <= 10) {
         res.send(newTweetsServer);
     } else {
-        const begin = newTweetsServer.length - 10;
+        const numberTen = 10;
+        const begin = newTweetsServer.length - numberTen;
         let newArrayTweetsServer = [];
-        for(let i = begin; i < newTweetsServer.length; i++){
+
+        for (let i = begin; i < newTweetsServer.length; i++) {
             newArrayTweetsServer.push(newTweetsServer[i]);
-            console.log(newArrayTweetsServer)
         }
 
         res.send(newArrayTweetsServer);
     }
 
+})
+
+app.get("/tweets/:USERNAME", (req, res) => {
+
+    const { USERNAME } = req.params;
+
+    const chooseUser = newTweetsServer.filter((user) => user.username === USERNAME);
+
+    res.send(chooseUser);
 })
 
 const PORT = 5000;
