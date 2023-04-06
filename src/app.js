@@ -14,14 +14,25 @@ app.post("/sign-up", (req, res) => {
     const newUser = { username, avatar };
 
     newUsersServer.push(newUser);
-    res.send("OK");
+    res.status(201).send("OK");
 })
 
-app.post("tweets", (req, res) => {
+app.post("/tweets", (req, res) => {
+
+    const { username, tweet } = req.body;
+
+    if(!username) {
+        res.status(401).send("UNAUTHORIZED");
+    }
+
+    const newTweet = { username, tweet };
+
+    newTweetsServer.push(newTweet);
+    res.status(201).send("OK");
 
 })
 
-app.get("tweets", (req, res) => {
+app.get("/tweets", (req, res) => {
 
 })
 
