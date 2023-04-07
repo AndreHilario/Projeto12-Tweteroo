@@ -23,20 +23,21 @@ app.post("/sign-up", (req, res) => {
 
 app.post("/tweets", (req, res) => {
 
-    const { username, tweet } = req.body;
+    const { tweet } = req.body;
+    const { user } = req.headers;
 
-    if (!username || !tweet || typeof username !== "string" || typeof tweet !== "string") {
+    if (!user|| !tweet || typeof user!== "string" || typeof tweet !== "string") {
         return res.status(400).send("Todos os campos são obrigatórios!");
     }
 
-    const user = newUsersServer.find((u) => u.username === username);
+    const userServer = newUsersServer.find((u) => u.username === user);
 
-    if (!user) {
+    if (!userServer) {
         res.status(401).send("UNAUTHORIZED");
         return;
     }
 
-    const newTweet = { username, avatar: user.avatar, tweet };
+    const newTweet = { user, avatar: userServer.avatar, tweet };
     newTweetsServer.push(newTweet);
     res.status(201).send("OK");
 
