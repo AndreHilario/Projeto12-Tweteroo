@@ -37,7 +37,7 @@ app.post("/tweets", (req, res) => {
         return;
     }
 
-    const newTweet = { user, avatar: userServer.avatar, tweet };
+    const newTweet = { username: user, avatar: userServer.avatar, tweet };
     newTweetsServer.push(newTweet);
     res.status(201).send("OK");
 
