@@ -46,7 +46,7 @@ app.get("/tweets", (req, res) => {
     const { page } = req.query;
   
     if (page && !Number.isInteger(Number(page)) || Number(page) < 1) {
-      return res.status(400).send("Informe uma página válida!");
+        return res.status(400).send("Informe uma página válida!");
     }
   
     const tweetsPerPage = 10;
