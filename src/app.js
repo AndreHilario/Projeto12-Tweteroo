@@ -33,8 +33,7 @@ app.post("/tweets", (req, res) => {
     const userServer = newUsersServer.find((u) => u.username === user);
 
     if (!userServer) {
-        res.status(401).send("UNAUTHORIZED");
-        return;
+        return res.status(401).send("UNAUTHORIZED");
     }
 
     const newTweet = { username: user, avatar: userServer.avatar, tweet };
@@ -59,7 +58,7 @@ app.get("/tweets", (req, res) => {
     const currentPage = newTweetsServer.slice(firstTweetIndex, lastTweetIndex + 1);
   
     res.send(currentPage);
-  });
+});
 
 app.get("/tweets/:USERNAME", (req, res) => {
 
