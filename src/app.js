@@ -19,14 +19,14 @@ app.post("/sign-up", (req, res) => {
 
     newUsersServer.push(newUser);
     res.status(201).send("OK");
-})
+});
 
 app.post("/tweets", (req, res) => {
 
     const { tweet } = req.body;
     const { user } = req.headers;
 
-    if (!user|| !tweet || typeof user!== "string" || typeof tweet !== "string") {
+    if (!user || !tweet || typeof user !== "string" || typeof tweet !== "string") {
         return res.status(400).send("Todos os campos são obrigatórios!");
     }
 
@@ -41,25 +41,25 @@ app.post("/tweets", (req, res) => {
     newTweetsServer.push(newTweet);
     res.status(201).send("OK");
 
-})
+});
 
 app.get("/tweets", (req, res) => {
-
-    if (newTweetsServer.length <= 10) {
-        res.send(newTweetsServer);
-    } else {
-        const numberTen = 10;
-        const begin = newTweetsServer.length - numberTen;
-        let newArrayTweetsServer = [];
-
-        for (let i = begin; i < newTweetsServer.length; i++) {
-            newArrayTweetsServer.push(newTweetsServer[i]);
-        }
-
-        res.send(newArrayTweetsServer);
+    const { page } = req.query;
+  
+    if (page && !Number.isInteger(Number(page)) || Number(page) < 1) {
+      return res.status(400).send("Informe uma página válida!");
     }
-
-})
+  
+    const tweetsPerPage = 10;
+  
+    const firstTweetIndex = (page ? Number(page) - 1 : 0) * tweetsPerPage;
+  
+    const lastTweetIndex = firstTweetIndex + tweetsPerPage - 1;
+  
+    const currentPage = newTweetsServer.slice(firstTweetIndex, lastTweetIndex + 1);
+  
+    res.send(currentPage);
+  });
 
 app.get("/tweets/:USERNAME", (req, res) => {
 
@@ -68,7 +68,7 @@ app.get("/tweets/:USERNAME", (req, res) => {
     const chooseUser = newTweetsServer.filter((user) => user.username === USERNAME);
 
     res.send(chooseUser);
-})
+});
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Tweeteroo funcionando na porta ${PORT}`));
